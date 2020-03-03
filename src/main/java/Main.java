@@ -3,7 +3,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -32,13 +34,25 @@ public class Main {
             Element lTable = doc.getElementById("lightnovels_tbl");
             Elements links = lTable.getElementsByTag("a");
 
-            File bookFile = new File("LN.txt");
+            File bookFile = new File("./src/main/java/LN.txt");
 
             if ( bookFile.createNewFile() ) {
+
+                FileWriter fileWriter = new FileWriter(bookFile.toString(), true);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
                 for ( Element item : links ) {
                     String bookTitle = item.text();
-
+                    bufferedWriter.write(bookTitle);
+                    bufferedWriter.newLine();
                 }
+
+                bufferedWriter.close();
+
+            } else {
+                System.out.println("file exists");
+
+                // Delete the file and re-write the list
             }
 
         } catch (Exception e) {
